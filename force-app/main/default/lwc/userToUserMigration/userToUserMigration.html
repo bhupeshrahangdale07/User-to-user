@@ -1,0 +1,314 @@
+<template>
+
+    <article class="slds-card" style="padding-top:10px;padding-bottom:10px;">
+        <lightning-accordion class="example-accordion" 
+        active-section-name="search">
+            <lightning-accordion-section name="search" label="Search">
+                
+                <div if:true={errorMsg} style="margin-left: 3%;">
+                    <p style="color: red;">{errorMsg}</p>
+                </div>
+                
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-3" style="padding-left: 5%;">
+                        <template if:false={selectedRecord}>
+                            <span class="required-indicator" style="color:#ba0517">* </span>
+                            Select User 
+                            
+                            <c-custom-Lookup iconname="standard:user" 
+                            objectname="User"
+                            searchfield="Name"
+                            txttype={txttype}
+                            onselectedrec={handleSel}
+                            ondeselectedrec={handleCancelSearchedUser}
+                            ></c-custom-Lookup>
+                        </template>
+                    </div>
+                        <div class="slds-col slds-size_1-of-3" style="padding-left: 5%;">
+                            <c-multi-select-combobox
+                                    label="Select Object"
+                                    name="options"
+                                    options={sObjectOptions}
+                                    onchange={handleSObjectChange}
+                                    required="true"
+                            ></c-multi-select-combobox>
+                        </div>
+                    <div class="slds-col slds-size_1-of-3" style="padding-top: 20px;">
+                        
+                            <lightning-button label="Search" 
+                                variant="brand" 
+                                onclick={handleMultiSelectSearch} disabled={isSearchDisabled}></lightning-button>
+                        
+                    </div>
+                </div> 
+
+                <template if:true={searchSpinner}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template> 
+                
+            </lightning-accordion-section>
+
+            
+
+            <lightning-accordion-section name="records" label="Searched Data">
+                <div style="height: 341px;">
+                    
+                    <template if:true={cssDisplay}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </template> 
+
+                    <template if:true={showdata}>
+                            <template if:true={searchedRecords}>
+                                <template if:true={isNonSetupObjectExist}>
+                                    <h3 class="slds-section__title slds-theme_shade">
+                                        <span class="slds-truncate slds-p-horizontal_small" title="Record Owned Details">Record Owned Details</span>
+                                    </h3>
+                                    <div if:true={errorMsgForAllObj} style="margin-left: 3%;">
+                                        <p style="color: red;">{errorMsgForAllObj}</p>
+                                    </div>
+                                
+                                    <lightning-layout multiple-rows="true" vertical-align="end">
+                                        <lightning-layout-item size="2" padding="around-small">
+                                            <lightning-layout-item size="3" padding="around-medium">
+                                            <label for="disableuserlookup">Transfer all Objects with this User</label>
+                                        </lightning-layout-item>
+                                            <c-custom-Lookup txttype={txttype} iconname="standard:user" objectname="User" searchfield="Name" onselectedrec={handleformasteruser} ondeselectedrec={handleTxtCancle} selecteduserforsearch={rid}>
+                                            </c-custom-Lookup>
+                                        </lightning-layout-item>
+                                        
+                                    </lightning-layout>
+                                </template>
+                            </template>
+                        
+                    </template>
+                
+                    <template if:true={showdata}>
+                        
+                            <template if:true={searchedRecords}>
+                                <template if:true={isNonSetupObjectExist}>
+                                    <div class="slds-vertical-tabs page-section page-main">
+                                        <div class="slds-grid slds-gutters slds-scrollable_y" style="height: 200px;">
+                                            
+                                            
+                                                <div class="slds-col slds-size_3-of-12">
+                                                    <div style="width:13rem" tabindex="0">
+                                                        <ul class="slds-vertical-tabs__nav" role="tablist" aria-orientation="vertical">
+                                                            <template for:each={searchedRecords} for:item="searchRec">
+                                                                <template if:true={searchRec.firstObject}>
+                                                                    <li key={searchRec.objAPIName} id={searchRec.objAPIName} class="slds-vertical-tabs__nav-item slds-is-active" title={searchRec.objLabel} role="presentation">
+                                                                        <a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true" aria-controls="slds-vertical-tabs-0">
+                                                                            <span class="slds-vertical-tabs__left-icon">
+                                                                                <lightning-icon icon-name={searchRec.objIconName}></lightning-icon>
+                                                                            </span>
+                                
+                                                                        <span class="slds-truncate" key={searchRec.objLabel} onclick={openSelectedObj} title={searchRec.objAPIName}>{searchRec.objLabel}</span>
+                                                                        <template if:true={searchRec.isSetupObject}>
+                                                                            <span key={searchRec.objAPIName} class="slds-vertical-tabs__right-icon">
+                                                                                <span class="slds-badge slds-badge_inverse">Setup</span>
+                                                                            </span>
+                                                                        </template>
+                                                                        </a>
+                                                                    </li>
+                                                                </template>
+                                                                <template if:false={searchRec.firstObject}>
+                                                                    <li key={searchRec.objAPIName} id={searchRec.objAPIName} class="slds-vertical-tabs__nav-item isActive" title={searchRec.objLabel} role="presentation">
+                                                                        <a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true" aria-controls="slds-vertical-tabs-0">
+                                                                            <span class="slds-vertical-tabs__left-icon">
+                                                                                <lightning-icon icon-name={searchRec.objIconName}></lightning-icon>
+                                                                            </span>
+                                
+                                                                        <span class="slds-truncate" key={searchRec.objLabel} onclick={openSelectedObj} title={searchRec.objAPIName}>{searchRec.objLabel}</span>
+                                                                        <template if:true={searchRec.isSetupObject}>
+                                                                            <span key={searchRec.objAPIName} class="slds-vertical-tabs__right-icon">
+                                                                                <span class="slds-badge slds-badge_inverse">Setup</span>
+                                                                            </span>
+                                                                        </template>
+                                                                        </a>
+                                                                    </li>
+                                                                </template>
+                                                            
+                                                            </template>
+                                                        
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            
+                                        
+                                            
+                                                <div class="slds-col slds-size_9-of-12">
+                                                    <div style="width: 75rem;">
+                                                        <template if:true={searchRec}>
+                                                            <div class="slds-vertical-tabs__content slds-show" id="slds-vertical-tabs-0" role="tabpanel" aria-labelledby="slds-vertical-tabs-0__nav" style="width: 62rem;">
+                                                                <template for:each={searchRec} for:item="s">
+                                                                    <c-record-data-table key={s.objAPIName} 
+                                                                    showbox={showbox} 
+                                                                    txttype={txttype} 
+                                                                    selectedglobalrecord={selectedglobalrecord} 
+                                                                    issetupobj={s.isSetupObject} 
+                                                                    onreturnupdatedobject={handleChangedValue} 
+                                                                    uid={rid} 
+                                                                    records={s} 
+                                                                    checkboxtrue={textboxdisable} 
+                                                                    useronchk={useronchk} 
+                                                                    chkdisable={chkdisable} 
+                                                                    lookuprecords={tablelookuprecords}
+                                                                    selectedrecid={rid}
+                                                                    ></c-record-data-table>
+                                                                </template>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                                
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </template>
+            
+                                <template if:true={isSetupObjectExist}>
+                                    <h3 class="slds-section__title slds-theme_shade">
+                                            <span class="slds-truncate slds-p-horizontal_small" title="Record Owned Details Setup object">Record Owned Details - Setup Object (These object's are not updateable.)</span>
+                                        </h3>
+                        
+                                    <div aria-hidden="false" class="slds-section__content">
+                                        <template for:each={searchedRecords} for:item="searchRec">
+                                            <template if:true={searchRec.isSetupObject}>
+                                                <lightning-accordion-section key={searchRec.objLabel} name={searchRec.objLabel} label={searchRec.objLabel}>
+                                                    <c-record-data-table issetupobj={searchRec.isSetupObject} onreturnupdatedobject={handleChangedValue} key={searchRec.objLabel} uid={rid} records={searchRec} checkboxtrue={textboxdisable} useronchk={useronchk}></c-record-data-table>
+                                                </lightning-accordion-section>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        
+                    </template>
+                    
+                
+                    <template if:true={norecords}>
+                        <div id="content3" style="position:absolute; top:200px; left:0px; right:0px; overflow:auto;"> 
+                            
+                               
+                                <div class="slds-notify_container slds-is-relative">
+                                    <div class="slds-notify slds-notify_toast slds-theme_info" role="status">
+                                    <span class="slds-assistive-text">info</span>
+                                    <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed" style="width: 130px;">
+                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+                                    </svg>
+                                    </span>
+                                    <div class="slds-notify__content">
+                                    <h2 class="slds-text-heading_small">No Records Found 
+                                    
+                                    </h2>
+                                    </div>
+                                    
+                                    </div>
+                                    </div>
+                           
+                        </div>
+                    </template> 
+
+                    <template if:false={searchButtonFlag}>
+                        <div id="content5" style="position:absolute; top:200px; left:0px; right:0px; overflow:auto;"> 
+                            
+                               
+                                <div class="slds-notify_container slds-is-relative">
+                                    <div class="slds-notify slds-notify_toast slds-theme_info" role="status">
+                                    <span class="slds-assistive-text">info</span>
+                                    <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
+                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+                                    </svg>
+                                    </span>
+                                    <div class="slds-notify__content">
+                                    <h2 class="slds-text-heading_small"><center>Please Click on Search Button from Search Section</center>
+                                    
+                                    </h2>
+                                    </div>
+                                    
+                                    </div>
+                                    </div>
+                           
+                        </div>
+                    </template> 
+                    <template if:true={showTransfer}>
+                        
+                            
+                        <lightning-button label="Transfer" 
+                    variant="brand" class="slds-align_absolute-center" style="width: 100px;padding-top:6px;padding-bottom:5px;"
+                    onclick={handleTransfer} disabled={isTransferDisabled}></lightning-button>
+                
+            </template>
+                    
+                </div>
+                    
+                    
+               
+            </lightning-accordion-section>
+        
+            <lightning-accordion-section name="status" label="Batch Status">
+                <template lwc:if={batchHandle}>
+                       
+                    <p style="color: green; font-weight: bold; text-align: center;">The Batch is being Queued, please wait.</p>
+                            
+                            
+
+            </template> 
+                <lightning-layout if:true={batchProcessMSG}>
+                   
+
+                    <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="12"
+                        padding="around-small">
+                        
+                        <div class="slds-p-top_large">
+                            Batch Percentage Executed: <b>{batchProgress} %</b>
+                        </div>
+                        <div class="slds-p-top_large">
+                            <lightning-progress-bar value={batchProgress} size="large"></lightning-progress-bar>
+                        </div>
+                        <div class="slds-p-top_large">
+                            Batch Executed <b>{executedBatch}</b> of <b>{totalBatch}</b>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <lightning-layout if:true={transferButtonFlag}>
+                    <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="12"
+                    padding="around-small">
+                    <div id="content6" style="position:absolute; top:110px; left:0px; right:0px; overflow:auto;"> 
+                        
+                           
+                        <div class="slds-notify_container slds-is-relative">
+                            <div class="slds-notify slds-notify_toast slds-theme_info" role="status">
+                            <span class="slds-assistive-text">info</span>
+                            <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed" style="width: 75px;">
+                            <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+                            </svg>
+                            </span>
+                            <div class="slds-notify__content">
+                            <h2 class="slds-text-heading_small">Currently there is no Batch running
+                            
+                            </h2>
+                            </div>
+                            
+                            </div>
+                            </div>
+                   
+                </div>
+                </lightning-layout-item>
+                </lightning-layout>
+                
+
+            </lightning-accordion-section>
+        
+        </lightning-accordion>
+    </article>   
+
+    <div class="slds-docked-form-footer stickyFooter bottomfooter">
+        <center>App Developed by <a href="https://www.kandisatech.com/" target="_blank">Kandisa Technologies Private Limited</a></a></center>
+    </div>
+    
+</template>

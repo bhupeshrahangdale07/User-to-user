@@ -1,0 +1,55 @@
+<template>
+        <!--<a href="JavaScript:Void(0)" style="text-decoration:none;" onclick={handleSelect}>
+            <lightning-layout>
+                <lightning-layout-item>
+                    <lightning-icon icon-name={iconname} size="small"></lightning-icon>
+                      
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    {record.Name}
+                </lightning-layout-item>
+            </lightning-layout>
+        </a> -->
+        
+        <li role="presentation" class="slds-listbox__item">
+            <div id="option1" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option" onclick={handleSelect}>
+                <span class="slds-media__figure slds-listbox__option-icon">
+                <span class="slds-icon_container slds-icon-standard-user">
+                    <lightning-icon icon-name="standard:user" size="small" ></lightning-icon>
+                </span>
+                </span>
+                <span class="slds-media__body">
+                <span class="slds-listbox__option-text slds-listbox__option-text_entity">{record.Name} <template if:true={record.IsActive}><span class="active"></span></template>
+                <template if:false={record.IsActive}><span class="inactive"></span></template> </span>
+                <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">User</span>
+                </span>
+            </div>
+        </li>
+
+            <!--<div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_4-of-4 ">
+                        <ul class="slds-listbox slds-listbox_vertical" role="menu">
+                            <li role="presentation" class="slds-listbox__item">
+                                <div class="slds-media slds-listbox__option 
+                                                            slds-listbox__option_entity 
+                                                            slds-listbox__option_has-meta" 
+                                                            role="option"
+                                    onclick={handleSelect}>
+                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                        <lightning-icon icon-name={iconname} size="medium"></lightning-icon>
+                                    </span>
+                                    <span class="slds-media__body" 
+                                        style="padding-top: 9px;font-weight: 600;">
+                                        <span class="slds-listbox__option-text 
+                                        slds-text-title slds-listbox__option-text_entity">
+                                            {record.Name} <template if:true={record.IsActive}><span class="active"></span></template>
+                                            <template if:false={record.IsActive}><span class="inactive"></span></template> <br/>User 
+                                        </span>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+            </div>-->
+        
+    </template>

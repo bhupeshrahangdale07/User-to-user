@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable">
+    
+	<div class="slds-page-header">
+        <div class="slds-media">
+            <div class="slds-media__figure">
+                <span class="slds-icon_container">
+            		<lightning:icon iconName="custom:custom15" alternativeText="Change Owner"/>
+                </span>
+            </div>
+            <div class="slds-media__body">
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Transfer Records">Transfer Records User to User</h1>
+                <p class="slds-text-body_small slds-line-height_reset">Transfer Records</p>
+            </div>
+        </div>
+	</div>
+</aura:component>

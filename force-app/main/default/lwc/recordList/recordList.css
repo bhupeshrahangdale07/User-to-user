@@ -1,0 +1,15 @@
+.active {
+    height: 7px;
+    width: 7px;
+    background-color: #4CAF50!important;
+    border-radius: 50%;
+    float: right;
+  }
+
+.inactive {
+    height: 7px;
+    width: 7px;
+    background-color: red!important;
+    border-radius: 50%;
+    float: right;
+}

@@ -1,0 +1,9 @@
+<template>
+    <!-- Create an Input Field where user can enter text to find the
+    Records-->
+
+    <lightning-input variant="label-hidden" class="searchtxtdisable"
+        label="Search Record" value={searchkey}  type={txttype} onblur={hidesearchbox}
+        onchange={handleChange} placeholder="Search User..." disabled={textboxdisabled}>
+    </lightning-input>
+</template>

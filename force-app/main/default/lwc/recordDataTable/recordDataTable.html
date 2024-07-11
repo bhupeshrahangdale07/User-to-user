@@ -1,0 +1,84 @@
+<template>
+    <!--<article class="slds-card">   
+        <div class="slds-card__header slds-grid">     
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">       
+                <div class="slds-media__figure">         
+                    <span class="slds-icon_container slds-icon-standard-account" title="account">           
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">             
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>           
+                        </svg>           
+                        <span class="slds-assistive-text">{objlabel}</span>         
+                    </span>       
+                </div>       
+                <div class="slds-media__body">         
+                    <h2 class="slds-card__header-title">           
+                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" >             
+                            <span>{objlabel}</span>          
+                        </a>         
+                    </h2>       
+                </div>       
+                <c-custom-Lookup iconname="standard:user" objectname="User" searchfield="Name" onselectedrec={handleSel}>
+                </c-custom-Lookup>     
+            </header>   
+        </div>   
+        <div class="slds-card__body slds-card__body_inner"></div>
+    </article>-->
+
+    <template if:false={issetupobj}>
+        <div if:true={errorMsg} style="margin-left: 3%;">
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+
+        <lightning-layout multiple-rows="true" vertical-align="end">
+            <lightning-layout-item size="3" padding="around-small" style="padding-top: 1px;">
+                <lightning-layout-item size="3" padding="around-medium">
+                    <label for="disableuserlookup">Transfer all Fields with this User</label>
+                </lightning-layout-item>
+                <c-custom-Lookup iconname="standard:user" records={lookuprecords} selectedrecord={selectedglobalrecord} searchkey={useronchk} textboxdisabled={checkboxtrue} txttype={txttype} objectname="User" searchfield="Name" onselectedrec={handleformasteruser} ondeselectedrec={handleTxtCancle} showbox={showboxfromtable} selecteduserforsearch={selectedrecid}>
+                </c-custom-Lookup>
+            </lightning-layout-item>
+            <!--<lightning-layout-item size="3" padding="around-small">
+                <lightning-input id="disableuserlookup" type="checkbox" label="Transfer all fields with this User" name="input1" onchange={changeLookup} disabled={chkdisable} checked={checkboxtrue}></lightning-input>
+            </lightning-layout-item>-->
+            
+
+        </lightning-layout>
+    </template>
+    
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">   
+        <thead>     
+            <tr class="slds-line-height_reset">       
+                <th scope="col">         
+                    <div class="slds-truncate" title="Field Name">Field Name</div>       
+                </th>       
+                <th scope="col">         
+                    <div class="slds-truncate" title="Record Count">Record Count</div>       
+                </th>
+                <template if:false={issetupobj}>
+                    <th scope="col">         
+                        <div class="slds-truncate" title="Assign User">Assign User</div>       
+                    </th> 
+                </template>    
+            </tr>   
+        </thead>   
+        <tbody>
+            <template if:true={records}>
+                <template for:each={records.objFields} for:item="recCount">   
+                    <template if:true={recCount.hasRecords}>
+                        <tr key={recCount.fieldAPI} class="slds-hint-parent">
+                            <td key={recCount.fieldLabel}>{recCount.fieldLabel}</td>
+                            <td key={recCount.count}>{recCount.count}</td>
+                            <template if:false={issetupobj}>
+                                <td key={recCount.fieldAPI}>
+                                    <c-custom-Lookup iconname="standard:user" showbox={showboxfromtable} txttype={txttype} records={lookuprecords} objfieldapi={recCount.fieldAPI} objectname="User" searchfield="Name" textboxdisabled={checkboxtrue} onselectedrec={handleSel} ondeselectedrec={hadleRemove} searchkey={recCount.userName} selectedrecord={recCount.selectedRecord} selecteduserforsearch={selectedrecid}>
+                                    </c-custom-Lookup>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+            </template>
+        </tbody>
+    </table>
+        
+</template>

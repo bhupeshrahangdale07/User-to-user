@@ -1,0 +1,58 @@
+<template>  
+    <!--<template if:true={record}>  
+      <lightning-layout vertical-align="center">  
+        <div style="cursor:pointer" key={record.Id} data-contact-id={record.Id} onclick={handleSelect}>  
+          <lightning-layout-item padding="around-small">  
+            {record.Name}  
+          </lightning-layout-item>  
+        </div>  
+      </lightning-layout>  
+    </template>  
+    <template if:false={record}>  
+      <p>No contact data available.</p>  
+    </template>  -->
+
+    <!--<a href="JavaScript:Void(0)" style="text-decoration:none;" onclick={handleSelect}>
+        <lightning-layout>
+            <lightning-layout-item>
+                <lightning-icon icon-name={iconname} size="small"></lightning-icon>
+                  
+            </lightning-layout-item>
+            <lightning-layout-item>
+                {record.Name}
+            </lightning-layout-item>
+        </lightning-layout>
+    </a> -->
+    <div >
+        <div class="slds-grid slds-wrap 
+                        slds-dropdown_length-with-icon-7 
+                        slds-dropdown_fluid"
+                 >
+                <div class="slds-col slds-size_4-of-4 ">
+                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <li role="presentation" class="slds-listbox__item">
+                            <div class="slds-media slds-listbox__option 
+                                                        slds-listbox__option_entity 
+                                                        slds-listbox__option_has-meta" 
+                                                        role="option"
+                                onclick={handleSelect}>
+                                <span class="slds-icon_container slds-icon-standard-user" title="Description of icon when needed">
+                                    <svg class="slds-icon" aria-hidden="true">
+                                      <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
+                                    </svg>
+                                  </span>&nbsp;&nbsp;
+                                <span class="slds-media__body" 
+                                    style="padding-top: 9px;font-weight: 600;">
+                                    <span class="slds-listbox__option-text 
+                                                                 slds-listbox__option-text_entity">
+                                        {record.Name}
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+    </div>
+
+  </template>

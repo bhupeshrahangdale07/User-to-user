@@ -1,0 +1,26 @@
+<!-- customMetadataViewer.html -->
+<template>
+    
+    <lightning-card title="User2User App Settings">
+        <div class="slds-p-around_medium" style="padding-left:5%;">
+        
+            <lightning-input type="checkbox" label="Create Success Logs" checked={allowToCreateSuccessLogs} onchange={handleSuccessLogChange}></lightning-input>
+            
+        </div>
+        <div class="slds-p-around_medium" style="padding-left:5% ;">
+            <lightning-input type="checkbox" label="Create Failed Logs" checked={allowToCreateFailedLogs} onchange={handleFailedLogChange}></lightning-input>
+        </div>
+        
+        <div class="slds-p-around_medium" style="padding-left:5% ;padding-right:86% ;">
+            <lightning-input type="number" label="Batch Size" value={batchSize} onchange={handleBatchSizeChange}></lightning-input>
+            </div>
+            <div class="slds-p-around_medium" style="padding-left:5% ;">
+            <lightning-button label="Save" variant="brand" onclick={saveCustomMetadata}></lightning-button>
+        </div>
+        
+    </lightning-card>
+
+    <div class="slds-docked-form-footer stickyFooter bottomfooter">
+        <center>App Developed by <a href="https://www.kandisatech.com/" target="_blank">Kandisa Technologies Private Limited</a></a></center>
+    </div>
+</template>
